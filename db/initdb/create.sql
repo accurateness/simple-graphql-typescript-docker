@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS task (
+    id INTEGER PRIMARY KEY,
+    title VARCHAR,
+    completed BOOLEAN,
+    project_id REFERENCES project(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS project (
+    id INTEGER PRIMARY KEY,
+    name VARCHAR
+);

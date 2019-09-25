@@ -1,0 +1,63 @@
+version: "2.1"
+
+services:
+#  db:
+#    image: postgres:11-alpine
+#    volumes:
+#      - ./db/pgdata:/pgdata
+#      - ./db/initdb/create.sql:/docker-entrypoint-initdb.d/create.sql
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      - POSTGRES_DB=${DB_NAME}
+#      - POSTGRES_USER=${DB_USER}
+#      - POSTGRES_PASSWORD=${DB_PASSWORD}
+#      - PGDATA=/pgdata
+#    healthcheck:
+#      test: ["CMD-SHELL", "pg_isready -U postgres"]
+#      interval: 30s
+#      timeout: 30s
+#      retries: 3
+#  prisma:
+#    image: prismagraphql/prisma:1.34
+#    restart: always
+#    ports:
+#    - "4466:4466"
+#    environment:
+#      PRISMA_CONFIG: |
+#        managementApiSecret: my-server-secret-123
+#        port: 4466
+#        databases:
+#          default:
+#            connector: postgres
+#            migrations: true
+#            host: db
+#            port: 5432
+#            user: docker
+#            password: docker
+#    depends_on:
+#      db:
+#        condition: service_healthy
+  server:
+    build:
+      context: ./server
+    command: npm run dev
+    volumes:
+      - ./server/src:/server/src
+    ports:
+      - "4000:4000"
+      - "5858:5858"
+    environment:
+      - API_URL=${API_URL}
+      - PORT=4000
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend/src:/frontend/src
+      - ./frontend/public:/frontend/public
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=${API_URL}
+      - PORT=3000

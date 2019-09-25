@@ -1,0 +1,7 @@
+server/node_modules
+server/dist
+
+frontend/node_modules
+
+db/pgdata
+
